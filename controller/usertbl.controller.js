@@ -95,4 +95,34 @@ router.put('/updateUser', (req, res) => {
 	);
 });
 
+//register user
+router.post('/saveUser', (req, res) => {
+	const params = req.body;
+	console.log(params);
+	mysqlconnection.query('INSERT INTO professionaltbl SET ?', params, (err, rows, fields) => {
+		if (!err) {
+			//res.send(`User with record ID:${params.emailid} has been added`);
+			res.send({ data: 'registered successfully' });
+		} else {
+			console.log(err);
+		}
+	});
+});
+
+router.post('/login', (req, res) => {
+	const params = req.body;
+	console.log(params);
+	mysqlconnection.query(
+		'select * from usertbl2 WHERE emailid=? && password=?',
+		[ params.emailid, params.password ],
+		(err, rows, fields) => {
+			if (!err) {
+				res.send({ data: rows });
+			} else {
+				console.log(err);
+			}
+		}
+	);
+});
+
 module.exports = router;
